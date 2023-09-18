@@ -2,61 +2,61 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-TEST_CASE("Tup4") {
-  Tup4<float> t1(4.3, -4.2, 3.1, 1.0);
-  Tup4<float> t2(4.3, -4.2, 3.1, 0.0);
+TEST_CASE("Vec4") {
+  Vec4<float> v1(4.3, -4.2, 3.1, 1.0);
+  Vec4<float> v2(4.3, -4.2, 3.1, 0.0);
 
   SECTION("Equality") {
-    REQUIRE(isApproxEqual(t1, Tup4<double>(4.3, -4.2, 3.1, 1.0)));
-    REQUIRE(isApproxEqual(t2, Tup4<double>(4.3, -4.2, 3.1, 0.0)));
+    REQUIRE(isApproxEqual(v1, Vec4<double>(4.3, -4.2, 3.1, 1.0)));
+    REQUIRE(isApproxEqual(v2, Vec4<double>(4.3, -4.2, 3.1, 0.0)));
   }
 
   SECTION("Component") {
-    REQUIRE(isApproxEqual(t1.x, 4.3));
-    REQUIRE(isApproxEqual(t1.y, -4.2));
-    REQUIRE(isApproxEqual(t1.z, 3.1));
-    REQUIRE(isApproxEqual(t1.w, 1.0));
+    REQUIRE(isApproxEqual(v1.x, 4.3));
+    REQUIRE(isApproxEqual(v1.y, -4.2));
+    REQUIRE(isApproxEqual(v1.z, 3.1));
+    REQUIRE(isApproxEqual(v1.w, 1.0));
 
-    REQUIRE(isApproxEqual(t2.x, 4.3));
-    REQUIRE(isApproxEqual(t2.y, -4.2));
-    REQUIRE(isApproxEqual(t2.z, 3.1));
-    REQUIRE(isApproxEqual(t2.w, 0.0));
+    REQUIRE(isApproxEqual(v2.x, 4.3));
+    REQUIRE(isApproxEqual(v2.y, -4.2));
+    REQUIRE(isApproxEqual(v2.z, 3.1));
+    REQUIRE(isApproxEqual(v2.w, 0.0));
   }
 
   SECTION("isPoint") {
-    REQUIRE(t1.isPoint());
-    REQUIRE_FALSE(t2.isPoint());
+    REQUIRE(v1.isPoint());
+    REQUIRE_FALSE(v2.isPoint());
   }
 
-  SECTION("isVector") {
-    REQUIRE_FALSE(t1.isVector());
-    REQUIRE(t2.isVector());
+  SECTION("isDirection") {
+    REQUIRE_FALSE(v1.isDirection());
+    REQUIRE(v2.isDirection());
   }
 
   SECTION("Addition") {
-    Tup4<double> a1(3, -2, 5, 1);
-    Tup4<double> a2(-2, 3, 1, 0);
+    Vec4<double> a1(3, -2, 5, 1);
+    Vec4<double> a2(-2, 3, 1, 0);
     auto sum = a1 + a2;
-    REQUIRE(isApproxEqual(sum, Tup4<double>(1, 1, 6, 1)));
+    REQUIRE(isApproxEqual(sum, Vec4<double>(1, 1, 6, 1)));
     REQUIRE(sum.isPoint());
   }
 
   SECTION("Unary minus") {
-    Tup4<double> a1(1, -2, 3, -4);
+    Vec4<double> a1(1, -2, 3, -4);
     auto neg = -a1;
-    REQUIRE(isApproxEqual(neg, Tup4<double>(-1, 2, -3, 4)));
+    REQUIRE(isApproxEqual(neg, Vec4<double>(-1, 2, -3, 4)));
   }
 
   SECTION("Scalar multiplication") {
-    Tup4<double> a1(1, -2, 3, -4);
+    Vec4<double> a1(1, -2, 3, -4);
     auto prod = a1 * 3.5;
-    REQUIRE(isApproxEqual(prod, Tup4<double>(3.5, -7, 10.5, -14)));
+    REQUIRE(isApproxEqual(prod, Vec4<double>(3.5, -7, 10.5, -14)));
   }
 
   SECTION("Scalar division") {
-    Tup4<double> a1(1, -2, 3, -4);
+    Vec4<double> a1(1, -2, 3, -4);
     auto quot = a1 / 2;
-    REQUIRE(isApproxEqual(quot, Tup4<double>(0.5, -1, 1.5, -2)));
+    REQUIRE(isApproxEqual(quot, Vec4<double>(0.5, -1, 1.5, -2)));
   }
 }
 
@@ -74,14 +74,14 @@ TEST_CASE("Point") {
 
   SECTION("isPoint") { REQUIRE(p1.isPoint()); }
 
-  SECTION("isVector") { REQUIRE_FALSE(p1.isVector()); }
+  SECTION("isDirection") { REQUIRE_FALSE(p1.isDirection()); }
 
   SECTION("Subtraction") {
     Point<double> p1(3, 2, 1);
     Point<double> p2(5, 6, 7);
     auto diff = p1 - p2;
     REQUIRE(isApproxEqual(diff, Direction<double>(-2, -4, -6)));
-    REQUIRE(diff.isVector());
+    REQUIRE(diff.isDirection());
   }
 }
 
@@ -101,21 +101,21 @@ TEST_CASE("Direction") {
 
   SECTION("isPoint") { REQUIRE_FALSE(v1.isPoint()); }
 
-  SECTION("isVector") { REQUIRE(v1.isVector()); }
+  SECTION("isDirection") { REQUIRE(v1.isDirection()); }
 
   SECTION("Subtraction") {
     Direction<double> v1(3, 2, 1);
     Direction<double> v2(5, 6, 7);
     auto diff = v1 - v2;
     REQUIRE(isApproxEqual(diff, Direction<double>(-2, -4, -6)));
-    REQUIRE(diff.isVector());
+    REQUIRE(diff.isDirection());
   }
 
   SECTION("Subtracting direction from zero-vector") {
     Direction<double> v1(1, -2, 3);
     auto diff = Direction<double>() - v1;
     REQUIRE(isApproxEqual(diff, Direction<double>(-1, 2, -3)));
-    REQUIRE(diff.isVector());
+    REQUIRE(diff.isDirection());
   }
 
   SECTION("Length") {

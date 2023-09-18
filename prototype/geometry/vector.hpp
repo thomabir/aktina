@@ -11,57 +11,58 @@ template <typename T>
 concept Scalar = std::is_scalar_v<T>;
 
 template <typename T>
-struct Tup4 {
-  // 4-tuple, 4th component is used to distinguish between points and directions
+struct Vec4 {
+  // 4-vector, 4th component is used to distinguish between points and
+  // directions
   T x, y, z, w;
-  Tup4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
-  Tup4() : x(0), y(0), z(0), w(0) {}
+  Vec4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
+  Vec4() : x(0), y(0), z(0), w(0) {}
   bool isPoint() { return w == 1.0; }
-  bool isVector() { return w == 0.0; }
-  Tup4<T> operator-() { return Tup4<T>(-x, -y, -z, -w); }
+  bool isDirection() { return w == 0.0; }
+  Vec4<T> operator-() { return Vec4<T>(-x, -y, -z, -w); }
 };
 
-// tuple operators
+// vec4 operators
 
 // add
 template <typename T, typename U>
-Tup4<T> operator+(Tup4<T> t, Tup4<U> u) {
-  return Tup4<T>(t.x + u.x, t.y + u.y, t.z + u.z, t.w + u.w);
+Vec4<T> operator+(Vec4<T> t, Vec4<U> u) {
+  return Vec4<T>(t.x + u.x, t.y + u.y, t.z + u.z, t.w + u.w);
 }
 
 // subtract
 template <typename T, typename U>
-Tup4<T> operator-(Tup4<T> t, Tup4<U> u) {
+Vec4<T> operator-(Vec4<T> t, Vec4<U> u) {
   return t + (-u);
 }
 
 // scalar multiplication
 template <typename T, Scalar U>
-Tup4<T> operator*(Tup4<T> t, U u) {
-  return Tup4<T>(t.x * u, t.y * u, t.z * u, t.w * u);
+Vec4<T> operator*(Vec4<T> t, U u) {
+  return Vec4<T>(t.x * u, t.y * u, t.z * u, t.w * u);
 }
 
 template <Scalar T, typename U>
-Tup4<U> operator*(T u, Tup4<U> t) {
+Vec4<U> operator*(T u, Vec4<U> t) {
   return t * u;
 }
 
 // scalar division
 template <typename T, Scalar U>
-Tup4<T> operator/(Tup4<T> t, U u) {
-  return Tup4<T>(t.x / u, t.y / u, t.z / u, t.w / u);
+Vec4<T> operator/(Vec4<T> t, U u) {
+  return Vec4<T>(t.x / u, t.y / u, t.z / u, t.w / u);
 }
 
 template <typename T>
-struct Point : public Tup4<T> {
-  Point(T x, T y, T z) : Tup4<T>(x, y, z, 1.0) {}
-  Point() : Tup4<T>() {}
+struct Point : public Vec4<T> {
+  Point(T x, T y, T z) : Vec4<T>(x, y, z, 1.0) {}
+  Point() : Vec4<T>() {}
 };
 
 template <typename T>
-struct Direction : public Tup4<T> {
-  Direction(T x, T y, T z) : Tup4<T>(x, y, z, 0.0) {}
-  Direction() : Tup4<T>() {}
+struct Direction : public Vec4<T> {
+  Direction(T x, T y, T z) : Vec4<T>(x, y, z, 0.0) {}
+  Direction() : Vec4<T>() {}
   T length() {
     return sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
   }
@@ -108,8 +109,8 @@ bool isApproxEqual(T t, U u) {
 }
 
 template <typename T, typename U>
-bool isApproxEqual(Tup4<T> t, Tup4<U> u) {
-  // compare two tuples for approximate equality
+bool isApproxEqual(Vec4<T> t, Vec4<U> u) {
+  // compare two Vec4 for approximate equality
   return isApproxEqual(t.x, u.x) && isApproxEqual(t.y, u.y) &&
          isApproxEqual(t.z, u.z) && isApproxEqual(t.w, u.w);
 }
