@@ -18,7 +18,39 @@ struct Tup4 {
   Tup4() : x(0), y(0), z(0), w(0) {}
   bool isPoint() { return w == 1.0; }
   bool isVector() { return w == 0.0; }
+  Tup4<T> operator-() { return Tup4<T>(-x, -y, -z, -w); }
 };
+
+// tuple operators
+
+// add
+template <typename T, typename U>
+Tup4<T> operator+(Tup4<T> t, Tup4<U> u) {
+  return Tup4<T>(t.x + u.x, t.y + u.y, t.z + u.z, t.w + u.w);
+}
+
+// subtract
+template <typename T, typename U>
+Tup4<T> operator-(Tup4<T> t, Tup4<U> u) {
+  return t + (-u);
+}
+
+// scalar multiplication
+template <typename T, Scalar U>
+Tup4<T> operator*(Tup4<T> t, U u) {
+  return Tup4<T>(t.x * u, t.y * u, t.z * u, t.w * u);
+}
+
+template <Scalar T, typename U>
+Tup4<U> operator*(T u, Tup4<U> t) {
+  return t * u;
+}
+
+// scalar division
+template <typename T, Scalar U>
+Tup4<T> operator/(Tup4<T> t, U u) {
+  return Tup4<T>(t.x / u, t.y / u, t.z / u, t.w / u);
+}
 
 template <typename T>
 struct Point : public Tup4<T> {
@@ -30,7 +62,29 @@ template <typename T>
 struct Direction : public Tup4<T> {
   Direction(T x, T y, T z) : Tup4<T>(x, y, z, 0.0) {}
   Direction() : Tup4<T>() {}
+  T length() {
+    return sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
+  }
+  Direction<T> normalise() {
+    T len = this->length();
+    Direction<T> result;
+    result.x = this->x / len;
+    result.y = this->y / len;
+    result.z = this->z / len;
+    return result;
+  }
 };
+
+template <typename T, typename U>
+T dot(Direction<T> t, Direction<U> u) {
+  return t.x * u.x + t.y * u.y + t.z * u.z;
+}
+
+template <typename T, typename U>
+Direction<T> cross(Direction<T> t, Direction<U> u) {
+  return Direction<T>(t.y * u.z - t.z * u.y, t.z * u.x - t.x * u.z,
+                      t.x * u.y - t.y * u.x);
+}
 
 template <Scalar T, Scalar U>
 bool isApproxEqual(T t, U u) {
