@@ -67,11 +67,7 @@ struct Direction : public Tup4<T> {
   }
   Direction<T> normalise() {
     T len = this->length();
-    Direction<T> result;
-    result.x = this->x / len;
-    result.y = this->y / len;
-    result.z = this->z / len;
-    return result;
+    return Direction<T>(this->x / len, this->y / len, this->z / len);
   }
 };
 
