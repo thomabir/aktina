@@ -22,6 +22,10 @@ set_target_properties(libfloat-compare PROPERTIES LINKER_LANGUAGE CXX)
 add_library(libcolor STATIC aktina/color.hpp)
 set_target_properties(libcolor PROPERTIES LINKER_LANGUAGE CXX)
 
+# canvas
+add_library(libcanvas STATIC aktina/canvas.hpp)
+set_target_properties(libcanvas PROPERTIES LINKER_LANGUAGE CXX)
+
 # aktina tests
 file(GLOB TEST_SOURCES "aktina/*.test.cpp")
 add_executable(tests ${TEST_SOURCES})
