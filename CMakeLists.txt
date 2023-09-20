@@ -15,9 +15,13 @@ set_target_properties(libgeom PROPERTIES LINKER_LANGUAGE CXX)
 add_library(libfloat-compare STATIC prototype/geometry/float-compare.hpp)
 set_target_properties(libfloat-compare PROPERTIES LINKER_LANGUAGE CXX)
 
+# color
+add_library(libcolor STATIC prototype/geometry/color.hpp)
+set_target_properties(libcolor PROPERTIES LINKER_LANGUAGE CXX)
+
 # prototype tests
-add_executable(tests prototype/geometry/vector.test.cpp prototype/geometry/float-compare.test.cpp)
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain libgeom libfloat-compare)
+add_executable(tests prototype/geometry/vector.test.cpp prototype/geometry/float-compare.test.cpp prototype/geometry/color.test.cpp)
+target_link_libraries(tests PRIVATE Catch2::Catch2WithMain libgeom libfloat-compare libcolor)
 
 include(CTest)
 include(Catch)
