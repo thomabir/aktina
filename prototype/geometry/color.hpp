@@ -6,8 +6,11 @@
 template <typename T>
 struct Color {
   T r, g, b;
+
+  // default constructor: explicitly set to 0 to avoid weird bug
+  Color() : r{0}, g{0}, b{0} {}
+
   Color(T r, T g, T b) : r{r}, g{g}, b{b} {}
-  Color() = default;
   Color(const Color<T>& other) : r{other.r}, g{other.g}, b{other.b} {}
   Color& operator=(const Color<T>& other) {
     if (this != &other) {
