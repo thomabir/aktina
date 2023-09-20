@@ -12,9 +12,12 @@ include_directories("${PROJECT_SOURCE_DIR}/prototype/geometry")
 add_library(libgeom STATIC prototype/geometry/vector.hpp)
 set_target_properties(libgeom PROPERTIES LINKER_LANGUAGE CXX)
 
+add_library(libfloat-compare STATIC prototype/geometry/float-compare.hpp)
+set_target_properties(libfloat-compare PROPERTIES LINKER_LANGUAGE CXX)
+
 # prototype tests
-add_executable(tests prototype/geometry/vector.test.cpp)
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain libgeom)
+add_executable(tests prototype/geometry/vector.test.cpp prototype/geometry/float-compare.test.cpp)
+target_link_libraries(tests PRIVATE Catch2::Catch2WithMain libgeom libfloat-compare)
 
 include(CTest)
 include(Catch)
